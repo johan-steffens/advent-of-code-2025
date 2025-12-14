@@ -55,4 +55,37 @@ fn part_two(input: String) {
     println!("part two");
 
     println!("input: {}", input);
+
+    let banks: Vec<Bank> = input.lines()
+        .map(|line| Bank { battery: line.chars().map(|c| c.to_digit(10).unwrap()).collect() })
+        .collect();
+
+    let mut jolt_sum = 0;
+    for bank in banks {
+        println!("bank: {:?}", bank.battery);
+
+        jolt_sum += get_max_jolts_part_two(bank);
+    }
+
+    println!("jolt sum: {}", jolt_sum);
+}
+
+fn get_max_jolts_part_two(bank: Bank) -> u64 {
+    let mut result = Vec::new();
+    let mut start = 0;
+
+    for i in 0..12 {
+        let remaining = 12 - i - 1;
+        let end = bank.battery.len() - remaining;
+
+        let slice = &bank.battery[start..end];
+        let max_digit = slice.iter().max().unwrap();
+        let pos_in_slice = slice.iter().position(|&x| x == *max_digit).unwrap();
+
+        result.push(*max_digit);
+        start = start + pos_in_slice + 1;
+    }
+
+    let jolt = result.iter().fold(String::new(), |current, next| format!("{}{}", current, next));
+    return jolt.parse::<u64>().unwrap();
 }
