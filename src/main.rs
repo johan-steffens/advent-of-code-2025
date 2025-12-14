@@ -2,6 +2,7 @@ mod shared;
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 
 use crate::shared::Part as Part;
 
@@ -29,6 +30,7 @@ fn main() {
         1 => day1::run(matched_part, example),
         2 => day2::run(matched_part, example),
         3 => day3::run(matched_part, example),
+        4 => day4::run(matched_part, example),
         _ => panic!("Day {} not implemented", day),
     }
 }
