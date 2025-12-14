@@ -38,12 +38,48 @@ fn part_one(input: String) {
             .collect();
 
     let mut matrix = Matrix::from_rows(positions);
+
+    let removed_paper = remove_paper(&mut matrix, false);
+    println!("removed_paper: {}", removed_paper);
+}
+
+fn part_two(input: String) {
+    println!("part two");
+
+    println!("input: {}", input);
+
+    let positions: Vec<Vec<Position>> = input.lines()
+        .map(|line| line.chars()
+                .map(|c| {
+                    (match c {
+                        '.' => Position { paper: false, forklift_accessible: false },
+                        '@' => Position { paper: true, forklift_accessible: false },
+                        _ => panic!("unknown character: {}", c),
+                    })
+                }).collect())
+            .collect();
+
+    let mut matrix = Matrix::from_rows(positions);
+
+    let mut removed_paper = 0;
+    
+    loop {
+        let removed = remove_paper(&mut matrix, true);
+        removed_paper += removed;
+
+        if removed == 0 {
+            break;
+        }
+    }
+    
+    println!("removed_paper: {}", removed_paper);
+}
+
+fn remove_paper(matrix: &mut Matrix<Position>, remove_paper: bool) -> u32 {
     let width = matrix.width();
     let height = matrix.height();
 
-    println!("matrix::\n\n");
-
-    let mut accessible_count = 0;
+    let mut removed_paper = 0;
     for y in 0..height {
         for x in 0..width {
             let accessible = {
@@ -68,18 +104,17 @@ fn part_one(input: String) {
                     .get_mut()
                     .forklift_accessible = true;
 
-                accessible_count += 1;
+                if remove_paper {
+                    matrix
+                        .at_mut(x as i32, y as i32)
+                        .get_mut()
+                        .paper = false;
+                }
+
+                removed_paper += 1;
             }
         }
     }
 
-    println!("accessible_count: {}", accessible_count);
-}
-
-fn part_two(input: String) {
-    println!("part two");
-
-    println!("input: {}", input);
-
-    
+    removed_paper
 }
