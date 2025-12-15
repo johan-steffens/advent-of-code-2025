@@ -79,6 +79,16 @@ impl<T> Matrix<T> {
     }
 }
 
+impl<T: Clone> Clone for Matrix<T> {
+    fn clone(&self) -> Self {
+        Self {
+            width: self.width,
+            height: self.height,
+            cells: self.cells.clone(),
+        }
+    }
+}
+
 #[derive(Clone, Copy)]
 pub struct Point<'a, T> {
     m: &'a Matrix<T>,
