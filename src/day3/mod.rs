@@ -9,7 +9,7 @@ struct Bank {
 }
 
 pub fn run(part: Part, example: bool) {
-    println!("day two");
+    println!("day three");
 
     let input = fs::read_to_string(format!("{}{}", PATH_PREFIX, if example { "example.txt" } else { "actual.txt" })).unwrap();
     
