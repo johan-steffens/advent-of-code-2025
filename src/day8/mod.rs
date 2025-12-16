@@ -1,7 +1,7 @@
 use std::{collections::HashMap, fs};
 
 use glam::Vec3;
-use union_find::{QuickUnionUf, Union, UnionByRank, UnionFind, UnionResult};
+use union_find::{QuickUnionUf, UnionByRank, UnionFind};
 
 use crate::shared::{Part};
 

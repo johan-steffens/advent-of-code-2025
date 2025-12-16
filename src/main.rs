@@ -7,6 +7,7 @@ mod day5;
 mod day6;
 mod day7;
 mod day8;
+mod day9;
 
 use crate::shared::Part as Part;
 
@@ -16,15 +17,17 @@ fn main() {
         println!("Usage: <day> <part> <use example data (y/n)>, e.g. 1 1 y");
         return;
     }
+
     let day = args[1].parse::<u32>().unwrap();
     let part = args[2].parse::<u32>().unwrap();
+
     let example: bool = if args.len() > 3 {
-        args[3].parse::<String>().unwrap() == "y"
+        args[3].parse::<String>().unwrap_or("n".to_string()) == "y"
     } else {
         false
     };
 
-    let matched_part = match part {
+    let matched_part: Part = match part {
         1 => Part::One,
         2 => Part::Two,
         _ => panic!("Invalid part: {}", part),
@@ -39,6 +42,7 @@ fn main() {
         6 => day6::run(matched_part, example),
         7 => day7::run(matched_part, example),
         8 => day8::run(matched_part, example),
+        9 => day9::run(matched_part, example),
         _ => panic!("Day {} not implemented", day),
     }
 }
