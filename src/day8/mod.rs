@@ -40,18 +40,18 @@ fn part_one(input: String, number_of_connections: usize) {
 
     println!("input: {}", input);
 
-    let mut junctions: Vec<Junction> = Vec::new();
-    for i in 0..input.lines().count() {
-        let line = input.lines().nth(i).unwrap();
-        let values: Vec<f32> = line.split(",")
-            .map(|value| value.parse::<f32>().unwrap())
-            .collect();
+        let mut junctions: Vec<Junction> = Vec::new();
+        for i in 0..input.lines().count() {
+            let line = input.lines().nth(i).unwrap();
+            let values: Vec<f32> = line.split(",")
+                .map(|value| value.parse::<f32>().unwrap())
+                .collect();
 
-        assert_eq!(values.iter().count(), 3);
+            assert_eq!(values.iter().count(), 3);
 
-        let position = Vec3::new(values[0], values[1], values[2]);
-        junctions.push(Junction { id: i, position });
-    }
+            let position = Vec3::new(values[0], values[1], values[2]);
+            junctions.push(Junction { id: i, position });
+        }
 
     let mut pairs: Vec<Connection> = Vec::new();
     for i in 0..junctions.len() {
@@ -91,5 +91,47 @@ fn part_two(input: String) {
 
     println!("input: {}", input);
 
-    
+    let mut junctions: Vec<Junction> = Vec::new();
+    for i in 0..input.lines().count() {
+        let line = input.lines().nth(i).unwrap();
+        let values: Vec<f32> = line.split(",")
+            .map(|value| value.parse::<f32>().unwrap())
+            .collect();
+
+        assert_eq!(values.iter().count(), 3);
+
+        let position = Vec3::new(values[0], values[1], values[2]);
+        junctions.push(Junction { id: i, position });
+    }
+
+    let mut pairs: Vec<Connection> = Vec::new();
+    for i in 0..junctions.len() {
+        for j in (i + 1)..junctions.len() {
+            let first = junctions[i];
+            let second = junctions[j];
+            let distance = (first.position - second.position).length();
+            pairs.push(Connection { first, second, distance });
+        }
+    }
+
+    pairs.sort_by(|a, b| a.distance.total_cmp(&b.distance));
+
+    let mut union = QuickUnionUf::<UnionByRank>::new(junctions.len());
+
+    let mut components = junctions.len();
+    for pair in pairs {
+        let r1 = union.find(pair.first.id);
+        let r2 = union.find(pair.second.id);
+
+        if r1 != r2 {
+            union.union(pair.first.id, pair.second.id);
+            components -= 1;
+
+            if components == 1 {
+                let product = pair.first.position.x * pair.second.position.x;
+                println!("total: {}", product);
+                break;
+            }
+        }
+    }
 }
