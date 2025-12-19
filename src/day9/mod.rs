@@ -5,7 +5,7 @@ use crate::shared::{Matrix, Part};
 const PATH_PREFIX: &str = "data/day9/";
 
 pub fn run(part: Part, example: bool) {
-    println!("day eight");
+    println!("day nine");
 
     let input = fs::read_to_string(format!("{}{}", PATH_PREFIX, if example { "example.txt" } else { "actual.txt" })).unwrap();
     
